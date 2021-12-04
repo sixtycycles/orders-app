@@ -1,0 +1,112 @@
+from django.db import models
+from django.contrib.auth.models import AbstractUser
+from localflavor.us.models import USPostalCodeField, USZipCodeField, USStateField
+from localflavor.us.us_states import US_STATES, STATE_CHOICES
+
+
+# do a custom user so we can extend later if needed.
+class User(AbstractUser):
+    ...
+
+
+class Vendor(models.Model):
+    name = models.CharField(
+        max_length=250,
+        null=True,
+    )
+    street = models.CharField(
+        max_length=500,
+        null=True,
+    )
+    city = models.CharField(
+        max_length=250,
+        null=True,
+    )
+    state = USStateField(
+        choices=STATE_CHOICES,
+        null=True,
+    )
+    zip = USZipCodeField()
+    email = models.EmailField(null=True)
+    phone = models.CharField(
+        max_length=20,
+        null=True,
+    )
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class DeliveryLabel(models.Model):
+    deliver_to = models.CharField(
+        max_length=250,
+        null=True,
+        blank=False,
+        help_text="name of person to receive the order @ ucla",
+    )
+    email = models.EmailField(blank=True, null=True)
+    room_number = models.CharField(max_length=250, null=True, blank=True)
+    ship_method = models.CharField(max_length=250, null=True, blank=True)
+    delivery_date = models.DateField(null=True, blank=True)
+    mark_urgent = models.BooleanField(default=False, blank=True)
+    order_contact_name = models.CharField(
+        max_length=250,
+        null=True,
+        blank=True,
+        help_text="who to contact for info about this order",
+    )
+    order_contact_email = models.EmailField(null=True, blank=True, help_text="")
+    order_contact_phone = models.CharField(
+        max_length=20, null=True, blank=True, help_text=""
+    )
+
+    def __str__(self):
+        return f"{self.deliver_to}"
+
+
+class OrderRequirements(models.Model):
+    requirement_title = models.CharField(max_length=200)
+    requirement_text = models.TextField()
+
+    def __str__(self):
+        return f"{self.requirement_title}"
+
+
+class OrderItem(models.Model):
+    quantity = models.IntegerField(max_length=100)
+    unit = models.CharField(max_length=100)
+    catalog_number = models.CharField(max_length=100)
+    cost_per_unit = models.FloatField()
+    description = models.TextField()
+    link_to_item = models.URLField()
+
+    def __str__(self):
+        return f"{self.quantity}x{self.unit}"
+
+
+class OrderFileUpload(models.Model):
+    uploaded_file = models.FileField(upload_to="uploads/%Y/%m/%d/")
+
+
+# orders are the thing
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=0)
+    timestamp_created = models.DateTimeField()
+    requirements = models.ForeignKey(
+        OrderRequirements, on_delete=models.SET_DEFAULT, default=1
+    )
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
+    delivery_label = models.ForeignKey(
+        DeliveryLabel,
+        models.CASCADE,
+    )
+    category = models.CharField(max_length=500, blank=True, default="generic")
+    items = models.ManyToManyField(OrderItem)
+    files = models.ForeignKey(OrderFileUpload, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user},{self.vendor}"
+
+
+class OrderStatus(models.Model):
+    status = models.CharField(max_length=200)

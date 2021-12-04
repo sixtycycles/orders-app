@@ -1,0 +1,40 @@
+{% extends 'index.html' %}
+{% block content %}
+    {% load widget_tweaks %}
+
+<a href="{% url 'create-vendor' %} "> <button class="btn btn-primary">add new vendor? </button></a>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Street</th>
+            <th scope="col">State</th>
+            <th scope="col">Zip Code</th>
+            <th scope="col">Edit?</th>
+            <th scope="col">Delete?</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for vendor in list_of_vendors %}
+            <tr>
+                <td>{{ vendor.name }}</td>
+                <td>{{ vendor.street }}</td>
+                <td>{{ vendor.state }}</td>
+                <td>{{ vendor.zip }}</td>
+                <td>
+                    <a href="{% url 'edit-vendor' vendor.id %}"><button class="btn btn-warning">Edit</button></a>
+                </td>
+                <td>
+                    <a href="{% url 'delete-vendor' vendor.id %}"><button class="btn btn-danger">Delete</button></a>
+                </td>
+
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+{% endblock content %}

@@ -1,4 +1,6 @@
 venv/
 *.pyc
-.idea/
+.idea
+db.sqlite3
 
+/nick orders schema/

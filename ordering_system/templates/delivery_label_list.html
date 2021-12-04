@@ -1,0 +1,42 @@
+{% extends 'index.html' %}
+{% block content %}
+    {% load widget_tweaks %}
+
+    <a href="{% url 'create-delivery-label' %} ">
+        <button class="btn btn-primary">Add a new Delivery Label?</button>
+    </a>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Street</th>
+            <th scope="col">State</th>
+            <th scope="col">Zip Code</th>
+            <th scope="col">Edit?</th>
+            <th scope="col">Delete?</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for delivery_label in list_of_delivery_labels %}
+            <tr>
+                <td>{{ delivery_label.name }}</td>
+                <td>{{ delivery_label.street }}</td>
+                <td>{{ delivery_label.state }}</td>
+                <td>{{ delivery_label.zip }}</td>
+                <td>
+                    <a href="{% url 'edit-delivery-label' delivery_label.id %}">
+                        <button class="btn btn-warning">Edit</button>
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'delete-delivery-label' delivery_label.id %}">
+                        <button class="btn btn-danger">Delete</button>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock content %}

@@ -1,0 +1,13 @@
+{% extends 'index.html' %}
+{% block content %}
+
+
+
+<h1> Are you sure you want to delete {{ delivery_label.id }}</h1>
+<form action="" method="post">{% csrf_token %}
+<input class="form-control btn-danger" type="submit" value="Yes, delete this Delivery Label"> </form>
+<br>
+
+
+
+{% endblock content %}

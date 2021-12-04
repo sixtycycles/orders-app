@@ -1,0 +1,96 @@
+{% extends 'index.html' %}
+{% block content %}
+    {% load widget_tweaks %}
+    <h1>Create New Delivery Label</h1>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {% load widget_tweaks %}
+
+        {% for hidden_field in form.hidden_fields %}
+            {{ hidden_field }}
+        {% endfor %}
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+{#         <div class="form-group">#}
+{#                <label for="id_deliver_to"> Deliver to </label>#}
+{#             {{ form.deliver_to|add_class:"form-control" }}#}
+{#         </div>#}
+{##}
+{#        <div class="form-group">#}
+{#                <label for="id_email"> Email </label>#}
+{#             {{ form.deliver_to|add_class:"form-control" }}#}
+{#         </div>#}
+{##}
+{##}
+{#        <div class="form-group">#}
+{#                <label for="id_room_number"> Room Number </label>#}
+{#             {{ form.room_number|add_class:"form-control" }}#}
+{#         </div>#}
+{##}
+{#        <div class="form-group">#}
+{#                <label for="id_ship_method">Ship Method </label>#}
+{#             {{ form.ship_method|add_class:"form-control" }}#}
+{#         </div>#}
+{##}
+{#        <div class="form-group">#}
+{#                <label for="id_delivery_date"> Delivery Date</label>#}
+{#             {{ form.delivery_date|add_class:"form-control" }}#}
+{#         </div>#}
+{#        <div class="form-group">#}
+{#                <label for="id_mark_urgent"> Mark Urgent</label>#}
+{#             {{ form.mark_urgent|add_class:"form-control form-check-input" }}#}
+{#         </div>#}
+{#            <div class="form-group">#}
+{#                <label for="id_order_contact_name"> Order Contact Name </label>#}
+{#             {{ form.order_contact_name|add_class:"form-control" }}#}
+{#         </div>#}
+{#            <div class="form-group">#}
+{#                <label for="id_order_contact_email"> Order Contact Email</label>#}
+{#             {{ form.order_contact_email|add_class:"form-control" }}#}
+{#         </div>#}
+{#    <div class="form-group">#}
+{#                <label for="id_order_contact_phone"> Order Contact Phone</label>#}
+{#             {{ form.order_contact_phone|add_class:"form-control" }}#}
+{#         </div>#}
+
+        {% for field in form.visible_fields %}
+            <div class="form-group">
+                {{ field.label_tag}}
+
+                {% if form.is_bound %}
+                    {% if field.errors %}
+                        {% render_field field class="form-control is-invalid" %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-warning">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {% render_field field class="form-control is-valid" %}
+                    {% endif %}
+                {% else %}
+                    {% if field.name == "mark_urgent" %}
+                        {% render_field field class="form-check-input"%}
+                    {% else %}
+                        {% render_field field class="form-control"%}
+                    {% endif %}
+                {% endif %}
+
+                {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+            </div>
+
+        {% endfor %}
+
+        <button class='btn btn-block btn-primary mt-4' type="submit">Add Delivery Label?</button>
+    </form>
+{% endblock content %}
