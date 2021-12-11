@@ -1,33 +1,25 @@
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+
 from .views import (
-    index,
-    vendor_create,
-    vendor_list,
-    vendor_delete,
-    vendor_edit,
-    delivery_label_create,
-    delivery_label_list,
-    delivery_label_delete,
-    delivery_label_edit,
+    item_create_view,
+    item_delete_view,
+    item_detail_view,
+    item_edit_view,
+    order_add_item_view,
+    order_create_view,
+    order_delete_view,
+    order_detail_view,
+    order_list_view,
 )
 
-
 urlpatterns = [
-    path("", index),
-    path("accounts/", include("django.contrib.auth.urls")),
-    path("vendor/new/", vendor_create, name="create-vendor"),
-    path("vendor/", vendor_list, name="list-vendors"),
-    path("vendor/<int:id>/edit/", vendor_edit, name="edit-vendor"),
-    path("vendor/<int:id>/delete/", vendor_delete, name="delete-vendor"),
-    path("delivery_label/new/", delivery_label_create, name="create-delivery-label"),
-    path("delivery_label/", delivery_label_list, name="list-delivery-labels"),
-    path(
-        "delivery_label/<int:id>/edit/", delivery_label_edit, name="edit-delivery-label"
-    ),
-    path(
-        "delivery_label/<int:id>/delete/",
-        delivery_label_delete,
-        name="delete-delivery-label",
-    ),
+    path("item/<int:pk>/create/", item_create_view, name="item-create"),
+    path("item/<int:pk>/edit/", item_edit_view, name="item-edit"),
+    path("item/<int:pk>/delete/", item_delete_view, name="item-delete"),
+    path("item/<int:pk>/", item_detail_view, name="item-detail"),
+    path("create/", order_create_view, name="order-create"),
+    path("<int:pk>/add_item/", order_add_item_view, name="order-add-item"),
+    path("<int:pk>/delete/", order_delete_view, name="order-delete"),
+    path("<int:pk>/", order_detail_view, name="order-detail"),
+    path("", order_list_view, name="order-list"),
 ]

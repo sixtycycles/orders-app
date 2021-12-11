@@ -1,37 +1,25 @@
 from django import forms
-from .models import Vendor, DeliveryLabel
-from localflavor.us.forms import USPSSelect, USStateSelect
-
-# class CreateNewOrderForm(forms.Form):
-#     prefix = 'create_order_form'
-#     your_name = forms.CharField(label='Your name', max_length=100)
+from .models import Item, Order
 
 
-class VendorForm(forms.ModelForm):
-    name = forms.TextInput()
-    street = forms.TextInput()
-    city = forms.TextInput()
-    # state = USStateSelect()
+class OrderCreateForm(forms.ModelForm):
+
     class Meta:
-        model = Vendor
-        fields = ["name", "street", "city", "state", "zip", "phone"]
+        model = Order
+        fields = ("user", "vendor", )
+
+    def save(self, commit: bool = True) -> Order:
+        order: Order = super().save(commit)
+        order.save()
+        return order
 
 
-class DeliveryLabelForm(forms.ModelForm):
-
-    mark_urgent = forms.BooleanField(widget=forms.CheckboxInput())
-
-    # state = USStateSelect()
+class ItemForm(forms.ModelForm):
     class Meta:
-        model = DeliveryLabel
-        fields = [
-            "deliver_to",
-            "email",
-            "room_number",
-            "ship_method",
-            "delivery_date",
-            "mark_urgent",
-            "order_contact_name",
-            "order_contact_email",
-            "order_contact_phone",
-        ]
+        model = Item
+        fields = ("order",)
+
+    def save(self, commit: bool = True) -> Item:
+        item: Item = super().save(commit)
+        item.save()
+        return item

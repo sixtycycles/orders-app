@@ -1,0 +1,20 @@
+{#<div id="order-list-form">#}
+{#<h1>Start a New Order</h1>#}
+{#    <form>#}
+{#        {% csrf_token %}#}
+{#    <label for ></label>#}
+{#        <input class="form-control" id="id_name" name="name" placeholder="Name" {% if form.name.value %} value="{{ form.name.value }}" {% endif %}>#}
+{##}
+{#            <button class="btn btn-primary mt-4" hx-post="{% url 'order-create' %}" hx-swap="outerHTML" hx-target="#order-list-form">Create</button>#}
+{##}
+{#    </form>#}
+{#</div>#}
+<div id="order-list-form">
+<h1>Start a New Order</h1>
+    <form>
+        {% csrf_token %}
+        {% include 'ordering_system/partials/_base_form.html' with form=form %}
+        <button class="btn btn-primary mt-4" hx-post="{% url 'order-create' %}" hx-swap="outerHTML" hx-target="#order-list-form">Create</button>
+    </form>
+</div>
+
