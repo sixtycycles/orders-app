@@ -5,5 +5,5 @@ from ordering_system.views import landing_page
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("orders/", include("ordering_system.urls")),
-    path("", landing_page, name="landing-page")
+    path("", landing_page, name="landing-page"),
 ]

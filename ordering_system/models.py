@@ -65,6 +65,7 @@ class DeliveryLabel(models.Model):
     def __str__(self):
         return f"{self.deliver_to}"
 
+
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=0)
     timestamp_created = models.DateTimeField(auto_now=True)
@@ -104,7 +105,6 @@ class Order(models.Model):
 
 
 class Item(models.Model):
-
     class Meta:
         verbose_name = "Order Item"
         verbose_name_plural = "Order Items"
@@ -114,12 +114,17 @@ class Item(models.Model):
     unit = models.CharField(max_length=100, help_text="(The thing you are ordering)")
     catalog_number = models.CharField(max_length=100, blank=True, null=True)
     cost_per_unit = models.FloatField(blank=True, null=True)
-    description = models.TextField(blank=True, null=True, help_text="(anything you think we may need to know to get your order right)")
-    link_to_item = models.URLField(blank=True, null=True, help_text="(a link to the item you wish to purchase)")
+    description = models.TextField(
+        blank=True,
+        null=True,
+        help_text="(anything you think we may need to know to get your order right)",
+    )
+    link_to_item = models.URLField(
+        blank=True, null=True, help_text="(a link to the item you wish to purchase)"
+    )
 
     def __str__(self) -> str:
         return f"{self.quantity} x {self.unit}"
-
 
     def get_absolute_url(self) -> str:
         return reverse("order-item-detail", args=(self.order.id, self.id))

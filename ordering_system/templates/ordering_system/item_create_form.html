@@ -1,18 +1,20 @@
 <tr id="item-list-form" hx-target="this" hx-swap="outerHTML">
   <td class="border-0" >
-    <form>
+      <form>
         {% csrf_token %}
         <div class="form-row mb-3">
             <div class="col">
-                <input class="form-control
-                {% if form.is_done.errors %} is-invalid {% endif %} "
-                id="id_name" name="name" placeholder="Name" {% if form.name.value %} value="{{ form.name.value }}"{% endif %}>
-            </div>
-            <div class="col">
 
+    {%  include 'ordering_system/partials/_base_form.html' %}
+            <hr>
+{#            <label for="id_unit">Unit</label>#}
+{#                <input class="form-control#}
+{#                {% if form.is_done.errors %} is-invalid {% endif %} "#}
+{#                id="id_unit" name="unit" placeholder="Unit" {% if form.unit.value %} value="{{ form.unit.value }}"{% endif %}>#}
             </div>
+
             <div class="col">
-                <button class="btn btn-primary btn-sm" hx-post="{% url 'item-create' pk=order_id %}">Submit</button>
+                <button class="btn btn-success btn-sm" hx-post="{% url 'item-create' pk=order_id %}">Save</button>
             </div>
         </div>
         {% if form.name.errors %}<i>{{ form.name.errors }}</i>{% endif %}

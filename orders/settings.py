@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent
 SECRET_KEY = "SECRETKEY"
 
 DEBUG = True
-AUTH_USER_MODEL = 'ordering_system.User'
+AUTH_USER_MODEL = "ordering_system.User"
 ALLOWED_HOSTS = ["localhost", "*"]
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 INSTALLED_APPS = [
@@ -29,7 +29,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-
 ]
 
 ROOT_URLCONF = "orders.urls"

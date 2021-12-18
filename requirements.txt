@@ -1,5 +1,4 @@
-django
+Django
 django-localflavor
-django-htmx
-
-
+django-widget-tweaks
+Black

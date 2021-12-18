@@ -3,14 +3,12 @@
 {% block content %}
 <div class="row">
     <div class="col">
-        {% include "ordering_system/order_create_form.html" %}
+        <div id="order-table">
+            {% include "ordering_system/order_user_list.html" with object_list=object_list %}
+        </div>
     </div>
-
 </div>
 
-<div id="order-table">
-{#    {% include "tasks/order_filter.html" with object_list=object_list %}#}
-</div>
 {% endblock %}
 
 

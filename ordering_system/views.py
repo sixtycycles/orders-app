@@ -3,35 +3,35 @@ from typing import Any, Dict, List, cast
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseRedirect
 from django.http.request import HttpRequest
-from django.shortcuts import get_object_or_404, render,redirect
+from django.shortcuts import get_object_or_404, render, redirect
 
 from django.urls import reverse
 from django.views.generic import CreateView, DetailView, ListView
-from .forms import ItemForm, OrderCreateForm
+from .forms import ItemForm, OrderForm
 from .models import Item, Order
 
 
 def landing_page(request):
-    return render(request, 'ordering_system/landing.html')
+    return render(request, "ordering_system/landing.html")
 
 
 def order_list_view(request):
     context = {}
-    context["object_list"] = Order.objects.all()
-    context["form"] = OrderCreateForm()
+    context["list_of_orders"] = Order.objects.filter(user=request.user)
+    context["form"] = OrderForm()
 
     return render(request, "ordering_system/order_list.html", context)
 
 
 def order_create_view(request):
     context = {}
-    form = OrderCreateForm(request.POST or None)
+    form = OrderForm(request.POST or None)
 
     if request.method == "POST":
         if form.is_valid():
             order = form.save()
 
-            return redirect(f"/orders/{order.pk}/")
+            return redirect(f"/orders/{order.pk}/edit")
 
     context["form"] = form
     return render(request, "ordering_system/order_create_form.html", context)
@@ -53,6 +53,21 @@ def order_add_item_view(request, pk):
 
     context["Order"] = Order
     return render(request, "ordering_system/order_items.html", context)
+
+
+def order_edit_view(request, pk):
+    context = {}
+    edit_this = get_object_or_404(Order, pk=pk)
+    form = OrderForm(request.POST or None, instance=edit_this)
+
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect(f"/orders/{pk}")
+
+        # add form dictionary to context
+    context["form"] = form
+
+    return render(request, "ordering_system/order_edit.html", context)
 
 
 def order_delete_view(request, pk):
