@@ -14,7 +14,7 @@
 
  <script src="https://unpkg.com/htmx.org@1.6.1"></script>
   <script src="https://kit.fontawesome.com/2aaa0bfb6c.js" crossorigin="anonymous"></script>
-  <title>Item Lists</title>
+  <title>Orders App</title>
 </head>
 
 <body>
@@ -31,6 +31,7 @@
                     <a class="nav-link active" aria-current="page" href="{%  url 'order-list' %}">Home</a>
                 </li>
 
+                {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Actions
@@ -42,6 +43,12 @@
               <li> <a class="dropdown-item"  href="{% url 'order-list' %}">Delivery Labels</a></li>
           </ul>
         </li>
+                {% endif %}
+            {% if  not user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link " href="{%  url 'login' %}">Login</a>
+                </li>
+            {% endif %}
 
 
 
